@@ -1,0 +1,19 @@
+# Course-side exclusions: tests that are environment-sensitive outside the
+# benchmark containers. Format: <branch>/<classname>.<testname>
+
+# ctags on macOS reports build features the Linux containers lack -- it links
+# Gnulib's fnmatch/regex and advertises 'case-insensitive-filenames' (APFS) -- so
+# the --list-features / --list-languages enumerations and a case-sensitivity test
+# diverge. The Tmain[sandbox*] tests need Linux seccomp sandboxing (skipped on
+# macOS), and two Tmain shell tests differ in output encoding/locale.
+
+0368ca6ed669/tests.test_harvest_tmain1.test_tmain[common-prelude.d]
+0368ca6ed669/tests.test_harvest_tmain3.test_tmain[output-encoding-option.d]
+0368ca6ed669/tests.test_harvest_tmain3.test_tmain[sandbox-default-req.d]
+0368ca6ed669/tests.test_harvest_tmain3.test_tmain[sandbox-no-eager-guessing.d]
+0368ca6ed669/tests.test_harvest_tmain3.test_tmain[sandbox-unknown-submode.d]
+0368ca6ed669/tests.test_harvest_tmain3.test_tmain[sandbox-with-eager-guessing.d]
+0368ca6ed669/tests.test_harvest_tmain3.test_tmain[sandbox.d]
+0368ca6ed669/tests.test_languages.test_extension_case_sensitivity_uppercase_rejected
+0368ca6ed669/tests.test_languages.test_list_features_available
+0368ca6ed669/tests.test_languages.test_list_languages_shows_all_parsers
