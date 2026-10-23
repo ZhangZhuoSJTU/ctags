@@ -40,6 +40,10 @@
 *   DATA DECLARATIONS
 */
 
+/* Fixed capacities for small per-file bookkeeping buffers. */
+#define UNGETCH_BUF_LEN 8
+#define LINE_FPOS_MAP_INITIAL_LEN 256
+
 typedef struct sLangStack {
 	langType *languages;
 	unsigned int count;
@@ -74,8 +78,8 @@ typedef struct sComputPos {
 
 typedef struct sInputLineFposMap {
 	compoundPos *pos;
-	unsigned int count;
-	unsigned int size;
+	unsigned short count;
+	unsigned short size;
 } inputLineFposMap;
 
 typedef struct sAreaInfo {
@@ -93,7 +97,7 @@ typedef struct sInputFile {
 	MIO        *mio;           /* MIO stream used for reading the file */
 	compoundPos    filePosition;  /* file position of current line */
 	unsigned int ungetchIdx;
-	int         ungetchBuf[8]; /* characters that were ungotten */
+	int         ungetchBuf[UNGETCH_BUF_LEN]; /* characters that were ungotten */
 
 	bool bomFound;
 	/*  Contains data pertaining to the original `source' file in which the tag
@@ -563,9 +567,8 @@ static void freeLineFposMap (inputLineFposMap *lineFposMap)
 
 static void allocLineFposMap (inputLineFposMap *lineFposMap)
 {
-#define INITIAL_lineFposMap_LEN 256
-	lineFposMap->pos = xCalloc (INITIAL_lineFposMap_LEN, compoundPos);
-	lineFposMap->size = INITIAL_lineFposMap_LEN;
+	lineFposMap->pos = xCalloc (LINE_FPOS_MAP_INITIAL_LEN, compoundPos);
+	lineFposMap->size = LINE_FPOS_MAP_INITIAL_LEN;
 	lineFposMap->count = 0;
 }
 
